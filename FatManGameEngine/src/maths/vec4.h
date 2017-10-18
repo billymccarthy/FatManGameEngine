@@ -4,7 +4,8 @@ namespace fatman {
 	namespace maths {
 		struct Vec4 {
 			float x, y, z , w;
-			Vec4();
+
+			Vec4() = default;
 			Vec4(const float& x, const float& y, const float& z, const float& w);
 
 			Vec4& add(const Vec4& other);
