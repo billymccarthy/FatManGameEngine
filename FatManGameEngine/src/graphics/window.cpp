@@ -65,6 +65,10 @@ namespace fatman {
 		}
 		
 		void Window::update() {
+			GLenum error = glGetError();
+			if (error != GL_NO_ERROR) {
+				std::cout << "Open gl error:" << error << std::endl;
+			}
 			glfwPollEvents();
 			glfwSwapBuffers(m_Window);
 		}

@@ -70,5 +70,32 @@ namespace fatman {
 		void Shader::disable() const {
 			glUseProgram(0);
 		}
+
+		GLint Shader::getUniformLocation(const GLchar* name) const{
+			return glGetUniformLocation(m_ShaderID, name);
+		}
+		void Shader::setUniform1i(const GLchar* name, const int value) const {
+			glUniform1i(getUniformLocation(name), value);
+		}
+
+		void Shader::setUniform1f(const GLchar* name, const float value) const {
+			glUniform1f(getUniformLocation(name), value);
+		}
+		
+		void Shader::setUniform2f(const GLchar* name, const maths::Vec2 vector) const {
+			glUniform2f(getUniformLocation(name), vector.x, vector.y);
+		}
+		
+		void Shader::setUniform3f(const GLchar* name, const maths::Vec3 vector) const {
+			glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
+		}
+		
+		void Shader::setUniform4f(const GLchar* name, const maths::Vec4 vector) const {
+			glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+		}
+		
+		void Shader::setUniformMat4(const GLchar* name, const maths::Mat4& matrix) const {
+			glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, matrix.elements);
+		}
 	}
 }
