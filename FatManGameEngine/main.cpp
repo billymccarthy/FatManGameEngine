@@ -10,6 +10,7 @@
 #include "src\graphics\simple2drenderer.h"
 #include "src\graphics\batchrenderer2d.h"
 #include <time.h>
+#include "src\utils\Timer.h"
 
 #define BATCH_RENDERER 1
 int main() {
@@ -39,18 +40,21 @@ int main() {
 
 	srand(time(NULL));
 
-	//for (float y = 0; y < 9.0f; y += 0.08) {
-		//for (float x = 0; x < 16.0f; x += 0.08) {
-			//sprites.push_back(new
+	for (float y = 0; y < 9.0f; y += 0.08) {
+		for (float x = 0; x < 16.0f; x += 0.08) {
+			sprites.push_back(new
 #if BATCH_RENDERER
-				// Sprite(maths::Vec3(x, y, 0), maths::Vec2(0.8, 0.8), maths::Vec4(rand() % 1000 / 1000.0f, 0, 1, 1)));
+				Sprite(maths::Vec3(x, y, 0), maths::Vec2(0.8, 0.8), maths::Vec4(rand() % 1000 / 1000.0f, 0, 1, 1)));
 #else	
 				StaticSprite(maths::Vec3(x, y, 0), maths::Vec2(0.8, 0.8), maths::Vec4(rand() % 1000 / 1000.0f, 0, 1, 1), shader));
 #endif
-		//}
-	//}
+		}
+	}
 	std::cout << sprites.size() << std::endl;
+	Timer timer;
+
 	while (!window.closed()) {
+		timer.reset();
 		window.clear();
 		shader.setUniform2f("light_pos", Vec2((float)(window.getX() * 16.0f / 960.0f), (float)(9.0f - window.getY() * 9.0f / 540.0f)));
 #if BATCH_RENDERER
@@ -58,10 +62,10 @@ int main() {
 
 		batchedrenderer.submit(&sprite3);
 		batchedrenderer.submit(&sprite4);
-//		for each (Renderable2D* sp in sprites)
-	//	{
-		//	batchedrenderer.submit(sp);
-		//}
+		for each (Renderable2D* sp in sprites)
+		{
+			batchedrenderer.submit(sp);
+		}
 		batchedrenderer.end();
 		batchedrenderer.flush();
 #else
@@ -72,6 +76,7 @@ int main() {
 		renderer.flush();
 #endif
 		window.update();
+		printf("%f ms\n", timer.elapsed());
 	}
 	return 0;
 }
