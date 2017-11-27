@@ -3,12 +3,17 @@
 namespace fatman {
 	namespace graphics {
 		void Simple2DRenderer::submit(const Renderable2D* renderable) {
-			m_RenderQueue.push_back(renderable);
+			if (const StaticSprite* sprite = dynamic_cast<const StaticSprite*>(renderable)) {
+				m_RenderQueue.push_back((StaticSprite*)renderable);
+			} else {
+				std::cout << "Tried to add non static sprite to simple renderer. Sprite will not be rendered as a result " << std::endl;
+				delete sprite;
+			}
 		}
 
 		void Simple2DRenderer::flush(){
 			while (!m_RenderQueue.empty()) {
-				const Renderable2D* renderable = m_RenderQueue.front();
+				const StaticSprite* renderable = m_RenderQueue.front();
 				renderable->getVao()->bind();
 				renderable->getIbo()->bind();
 				
